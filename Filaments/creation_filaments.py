@@ -1,0 +1,107 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import cmocean.cm as cmo
+cmap = cmo.haline
+
+# === Paramètres importants : 
+nx = 500 #[-]
+ny = 500 #[-]
+dx = 5  #[km]
+dy = 5  #[km]
+maxK = 2*np.pi/dx
+minK = 2*np.pi/(nx*dx)
+# --- matrices position 
+xvec, yvec = np.array(range(nx))*dx, np.array(range(ny))*dy
+X,Y = np.meshgrid(xvec,yvec,indexing = 'xy')
+# --- Longueurs d'ondes désirées cercles :
+lambda_max = 350
+lambda_min = 200
+Kmax = 2*np.pi/lambda_min
+Kmin = 2*np.pi/lambda_max
+# --- matrices espace des phases
+nk = 2*nx+1
+kvec = np.linspace(-maxK,maxK,nk)
+KX,KY = np.meshgrid(kvec,kvec,indexing = 'ij')
+Knorm = np.sqrt(KX**2 + KY**2)
+
+# === 1. Creation matrice d'amplitude et phase 
+def create_amp_phase() : 
+    A = np.random.rand(nk,nk)
+    A[np.where(Knorm<Kmin)] = 0
+    A[np.where(Knorm>Kmax)] = 0
+    P = (np.random.rand(nk,nk)-0.5)*4*np.pi
+    P[np.where(Knorm<Kmin)] = 0
+    P[np.where(Knorm>Kmax)] = 0
+    return A,P
+#
+A,P = create_amp_phase()
+#plt.imshow(P)
+#plt.show()
+
+
+# --- 2. Transformation en fonction de courant 
+def create_streamfunc(A,P,kvec):
+    psi = np.zeros((nx,ny))
+    for i,kx in enumerate(kvec) :
+        for j,ky in enumerate(kvec) :
+            if A[i,j] > 0 :
+                psi += A[i,j]*np.sin(P[i,j] - kx*X  - ky*Y)
+    return psi
+
+
+#
+
+psi = create_streamfunc(A,P,kvec)
+"""
+plt.imshow(psi, cmap = 'RdBu',vmin = -25, vmax = 25)
+plt.colorbar(label = r'$\psi\ [m^2s^{-1}]$')
+plt.show()
+"""
+# --- 3. Transformation en courants :
+def get_uv_from_psi(psi) :
+    u =  (np.roll(psi,[-1,0],axis=[0,1])-psi)/dy
+    v = -(np.roll(psi,[0,-1],axis=[0,1])-psi)/dx
+    return u,v
+
+def curl(u,v) :
+    """ k*dx v - dy u """
+    curl = ((v - np.roll(v,[0,1],axis = [0,1]))/dx -
+            (u - np.roll(u,[1,0],axis = [0,1]))/dy )
+    return curl
+
+def div(u,v) :
+    """ ddx u + ddy v """
+    div = ((np.roll(u,[0,-1],axis = [0,1]) - u)/dx +
+           (np.roll(v,[-1,0],axis = [0,1]) - v)/dy )
+    return div
+
+#
+u,v = get_uv_from_psi(psi)
+cu = curl(u,v)
+if __name__ == "__main__":
+
+    fig, axes = plt.subplots(nrows = 2, ncols = 2, figsize = (8,6.5))
+    #
+    im0 = axes[0,0].pcolormesh(X/1000,Y/1000,psi, cmap = 'RdBu_r',
+                               vmin = -23, vmax = 23)
+    plt.colorbar(im0, ax = axes[0,0])
+    axes[0,0].set_title(r'$\psi\ [m^2s^{-1}]$')
+    #
+    im1 = axes[0,1].pcolormesh(X/1000,Y/1000,cu,cmap = 'seismic',
+                               vmin =-0.02, vmax = 0.02)
+    plt.colorbar(im1, ax = axes[0,1])
+    axes[0,1].set_title(r'$\omega\ [s^{-1}]$')
+    #
+    im2 = axes[1,0].pcolormesh(X[:50,:50]/1000,Y[:50,:50]/1000,
+                               np.sqrt(u**2+v**2)[:50,:50], cmap = 'viridis')
+    axes[1,0].streamplot(X[:50,:50]/1000,Y[:50,:50]/1000,u[:50,:50],v[:50,:50],
+                         linewidth = np.sqrt(u**2+v**2)[:50,:50]*3, color = 'black')
+    plt.colorbar(im2, ax=axes[1,0])
+    axes[1,0].set_title(r'Courant [$ms^{-1}$]')
+    #
+    im3 = axes[1,1].imshow(div(u,v))
+    plt.colorbar(im3, ax = axes[1,1])
+    axes[1,1].set_title('Divergence')
+    #
+    plt.tight_layout()
+    plt.show()
