@@ -17,10 +17,9 @@ nt   = 400
 tmax = 400
 times = np.linspace(0,tmax,nt)
 dt   = tmax/nt
-Vpot = 1
 
 # --- Fonctions : p
-def potential(x) :
+def potentiel(x,Vpot=0) :
     # Potentiel harmonique :
     omega = 0.08
     if Vpot==0 : return 0.5*m*omega**2*x**2
@@ -29,7 +28,7 @@ def potential(x) :
 
 def hamiltonian_operator(x) :
     H = np.zeros((len(x),len(x)))
-    for i,Vx in enumerate(potential(x)) :
+    for i,Vx in enumerate(potentiel(x)) :
         H[i,i] = hbar**2/(m*dx**2) + Vx
         if (i<len(x)-1): H[i,i+1] = -hbar**2/(2*m*dx**2)
         if i>0         : H[i,i-1] = -hbar**2/(2*m*dx**2)
@@ -44,7 +43,7 @@ def solution_temporelle(t_vec,E_i) :
     
 # ==== calculs ====
 # --- Solution de l'opérateur linéaire. 
-istate = [1,3,4]
+istate = [2,3]
 H           = hamiltonian_operator(x)
 E_i, psi_ix = linalg.eigs(H,k=25, which='SR')
 phi_it      = solution_temporelle(times,E_i)
@@ -52,11 +51,11 @@ phi_it      = solution_temporelle(times,E_i)
 
 
 # --- Séparation (fusion) des variables et normalisation.
-psi = np.array([psi_ix[:,i:i+1].dot(phi_it[i:i+1,:]) for i,E in enumerate(E_i)]) # Choix des états
-psi = psi[istate].sum(axis=0) # Addition des états choisis.
-psi = psi/np.linalg.norm(psi[:,0]) # normalisation
-Prob = np.sqrt((psi*psi.conj())).real # Probabilité
-psi2 = (psi*psi.conj()).real
+psi   = np.array([psi_ix[:,i:i+1].dot(phi_it[i:i+1,:]) for i,E in enumerate(E_i)])#Choix des états
+psi   = psi[istate].sum(axis=0) # Addition des états choisis.
+psi  /=np.linalg.norm(psi[:,0]) # normalisation
+Prob  = np.sqrt((psi*psi.conj())).real # Probabilité
+psi2  = (psi*psi.conj()).real
 Xmean = psi2.T.dot(x.reshape(nx,1))
 
 
@@ -64,8 +63,8 @@ Xmean = psi2.T.dot(x.reshape(nx,1))
 if __name__ == "__main__"  :
     # ==== Animation ====
     # --- Création de la figure 
-    fig = plt.figure(figsize = (7,5))
-    plt.plot(x, potential(x)-0.1,label = r'$V(x)$'  ,c='k',linestyle = ':')
+    fig = plt.figure(figsize = (14,8))
+    plt.plot(x, potentiel(x)-0.1,label = r'$V(x)$'  ,c='k',linestyle = ':')
     xvline = plt.axvline(Xmean[0],c='k',linestyle = '-.')
     xvtext = plt.text(x[0],-0.15,r"$\langle\Psi|x|\Psi\rangle$", zorder = 4)
     imP, = plt.plot(x,Prob[:,0],label = r'$|\Psi(x,t)|$',c='r')
