@@ -11,7 +11,7 @@ xmax = 1.5 # Étendue maximale du domaine
 nx   = 501
 dx   = (2*xmax+1)/nx
 x    = np.linspace(-xmax,xmax,nx)
-nt   = 80000
+nt   = 40000
 dt   = 0.0001 # We're stuck here 0.01
 tmax = nt*dx
 times = np.linspace(0,tmax,nt)
@@ -25,7 +25,7 @@ k    = (2*m*E_i)**0.5/hbar
 
 
 # --- Fonctions ---
-def potentiel(x,p=0) :
+def potentiel(x,p=2) :
     # Potentiel harmonique :
     omega = 5
     Vmax = 100
@@ -106,8 +106,8 @@ plt.xlabel(r'$x$')
 plt.ylim(-0.5,0.5)
 plt.xlim(-xmax,xmax)
 
-writervideo = animation.FFMpegWriter(fps=35)
-anim.save('schrodinger_harmonique.mp4', writer = writervideo)
+#writervideo = animation.FFMpegWriter(fps=35)
+#anim.save('schrodinger_harmonique.mp4', writer = writervideo)
 plt.show()
         
 

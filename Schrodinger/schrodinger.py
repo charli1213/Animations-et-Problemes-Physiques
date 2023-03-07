@@ -19,7 +19,7 @@ times = np.linspace(0,tmax,nt)
 dt   = tmax/nt
 
 # --- Fonctions : p
-def potentiel(x,Vpot=0) :
+def potentiel(x,Vpot=1) :
     # Potentiel harmonique :
     omega = 0.08
     if Vpot==0 : return 0.5*m*omega**2*x**2
@@ -43,7 +43,7 @@ def solution_temporelle(t_vec,E_i) :
     
 # ==== calculs ====
 # --- Solution de l'opérateur linéaire. 
-istate = [2,3]
+istate = [1,2]
 H           = hamiltonian_operator(x)
 E_i, psi_ix = linalg.eigs(H,k=25, which='SR')
 phi_it      = solution_temporelle(times,E_i)
