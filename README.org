@@ -10,7 +10,7 @@ Par exemple, les solutions de l'équation de Schrodinger pour un potentiel harmo
 
 * Équation de diffusion thermique
 Ici, nous résolvons l'équation de diffusion thermale toute simple,
-\[ \frac{\partial T}{\partial t} = \nabla T. \]
+\( \frac{\partial T}{\partial t} = \nabla T. \)
 
 
 * Équation de Schrodinger
