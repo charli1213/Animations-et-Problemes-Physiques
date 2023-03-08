@@ -7,3 +7,13 @@
 
 Ce dossier GitHub contient plusieurs expériences numériques classiques en physique. 
 Par exemple, les solutions de l'équation de Schrodinger pour un potentiel harmonique à l'aide de la méthode /leapfrog/, une solution eulérienne de l'équation thermique, etc. 
+
+* Équation de diffusion thermique
+Ici, nous résolvons l'équation de diffusion thermale toute simple,
+$$ \pdv{T}{t} $$
+
+* Équation de Schrodinger
+
+* Filaments
+
+* Élections municipale 2021
