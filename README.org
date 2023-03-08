@@ -10,8 +10,13 @@ Par exemple, les solutions de l'équation de Schrodinger pour un potentiel harmo
 
 * Équation de diffusion thermique
 Ici, nous résolvons l'équation de diffusion thermale toute simple,
-\( \frac{\partial T}{\partial t} = \nabla T. \)
+$$ \frac{\partial T}{\partial t} = \alpha\nabla^2  T, $$
+à l'aide de la méthode d'Euler.
 
+Les équations sont donc discrétisées de sorte que 
+$$
+\Delta T^{n+1}_{i} = \Delta t * \alpha \left( \frac{T^n_{i-1} - 2*T^n_{i} + T^n_{i+1}}{\delta x^2}.
+$$
 
 * Équation de Schrodinger
 
