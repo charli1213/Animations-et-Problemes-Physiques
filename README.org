@@ -1,0 +1,9 @@
+#+author: Charles-Édouard Lizotte
+#+title: README
+#+date: <2023-03-08 Wed>
+
+
+* Avant propos
+
+Ce dossier GitHub contient plusieurs expériences numériques classiques en physique. 
+Par exemple, les solutions de l'équation de Schrodinger pour un potentiel harmonique à l'aide de la méthode /leapfrog/, une solution eulérienne de l'équation thermique, etc. 
