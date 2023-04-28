@@ -25,15 +25,15 @@ k    = (2*m*E_i)**0.5/hbar
 
 
 # --- Fonctions ---
-def potentiel(x,p=2) :
+def potentiel(x,p=3) :
     # Potentiel harmonique :
     omega = 5
     Vmax = 100
     xmax = 0.5
     if p==0 : return omega**2*(x**2) # harmonique
     if p==1 : return np.where((x<xmax)*(x>-xmax),np.zeros(len(x)),100) # Puit infini
-    if p==2 : return np.where((x<0),np.zeros(len(x)),4) # Bump
-
+    if p==2 : return 1*np.where((x<0),np.zeros(len(x)),1) # Bump
+    if p==3 : return np.ones(len(x))*0.2
     
 def initial_condition(x, x0 = -0.25) :
     # Construction de l'onde physique dans un potentiel zero :
