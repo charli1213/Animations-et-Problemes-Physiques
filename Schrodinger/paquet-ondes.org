@@ -1,0 +1,35 @@
+#+AUTHOR: Charles-Édouard Lizotte
+#+TITLE: L'équation de Schrodinger
+#+DATE: \today
+#+latex_class: org-report
+
+
+* L'équation de Schrodinger
+
+** Introduction
+L'équation d'onde de Schrodinger décrit le comportement de la *fonction d'onde*, dénoté par le symbole $\psi$. 
+Cette dernière peut être décrite comme une *onde de probabilité* ou une distribution statistique  dépendante du temps.
+L'équation de Schrodinger met aussi en relation l'énergie d'une particule (soit sa composante spatiale) avec son évolution temporelle, de sorte que 
+\begin{equation}
+i\hbar \pdv{}{t} \psi(\mathbf{x},t) = \overbrace{\qty(
+\frac{-\hbar^2}{2m} \laplacian + V(\mathbf{x},t))}^\text{Opérateur d'énergie}\ \psi(\mathbf{x},t) 
+\hspace{1cm} \Longrightarrow \hspace{1cm}
+i\hbar \pdv{}{t} \ket{\psi}\ =\ \widehat{E}\ \ket{\psi},
+\end{equation}
+où $\hbar$ est le constante de Plank, $m$ est la masse de la particule et $V(x,t)$ est le potentiel soumis à notre particule.
+De son côté, $\widehat{E}$ est l'opérateur d'énergie, communément appelé le *Hamiltonien*. 
+La notation /chapeau/ sera utilisée au cours de ce texte pour dénoter la notion d'opérateur. 
+Les /bra-ket/ sont purement utilisées par condescendance -- car dans les faits, nous n'en avons pas besoin pour cet exercice.
+La dépendance en /x/ et /t/ de la fonction d'onde sera considérée comme implicite et n'apparaîtra plus dans les sous-sections suivantes.\\
+
+Par inspection, la présence du nombre /i/ dans l'équation nous signale déjà une information importante : la fonction d'onde évolue dans le plan complexe.
+Pour obtenir des /mesures/ réelles de la fonction d'onde, il faut procéder à l'utilisation d'outils statistiques, tels que la *moyenne*, la *variance*.
+
+
+** Solutions à l'équation de Schrodinger pour une potentiel fixe
+Dans le cas d'un potentiel fixe -- comme le potentiel harmonique par exemple -- l'opérateur d'énergie est un opérateur linéaire en $x$.
+Au même titre que les matrices, il est possible de trouver les valeurs propres d'un opérateur linéaire. 
+Ces dernières représenteront les *niveaux d'énergie* accessibles à notre particule.
+Mathématiquement, tout ceci s'exprime par 
+\begin{equation}
+\widehat{E} \ket{\psi} = E_i \ket{\psi}.
